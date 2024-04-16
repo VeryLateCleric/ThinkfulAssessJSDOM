@@ -321,7 +321,10 @@ function render(contacts) {
   Return a new array containing the filtered list. 
   Do NOT modify the original array.
 */
-function filterByCity(city) {}
+function filterByCity(city) {
+  const filteredContacts = contacts.filter(contact => contact.address.city === city);
+  return filteredContacts;
+}
 
 /*
   Add an `change` event listener to the `filterOptions` select element.
@@ -330,7 +333,19 @@ function filterByCity(city) {}
   If the value is not "0" call `filterByCity()` passing the value selected by
   the user. Then call `render()` with the filtered list.
 */
-function filterHandler() {}
+function filterHandler() {
+  const filterSelect = document.getElementById('filterOptions');
+  filterSelect.addEventListener('change',function() {
+    const selectedCity = this.value;
+
+     if (selectedCity === '0') {
+      render(contacts);
+    } else {
+      const filteredContacts = filterByCity(contacts, selectedCity);
+      render(filteredContacts);
+    }
+  })
+}
 
 /*
   Accepts an array of contacts.
@@ -343,7 +358,12 @@ function loadCities(contacts) {}
 /*
   Remove the contact from the contact list with the given id.
 */
-function deleteContact(id) {}
+function deleteContact(id) {
+  const index = contact.findIndex(contact => contact.id === id);
+  if (index !== -1) {
+    contacts.splice(index, 1);
+  }
+}
 
 /*
   Add a `click` event handler to the `deleteBtn` elements.
@@ -351,13 +371,25 @@ function deleteContact(id) {}
   corresponding `data-id` then call `deleteContact()` and re-render 
   the list.
 */
-function deleteButtonHandler() {}
+function deleteButtonHandler() {
+  document.querySelectorAll('.deleteBtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = parseInt(this.parentElement.getAttribute('data-id'));
+      deleteContact(contacts, id);
+      render(contacts);
+    })
+  })
+}
 
 /*
   Perform all startup tasks here. Use this function to attach the 
   required event listeners, call loadCities() then call render().
 */
-function main() {}
+function main() {
+  // filterHandler(contacts);
+  // deleteButtonHandler(contacts);
+  // render(contacts);
+}
 
 window.addEventListener("DOMContentLoaded", main);
 
