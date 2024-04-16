@@ -247,43 +247,36 @@ window.contacts = [
  The `contact` parameter is an object representing a single contact. 
 */
 function renderContact(contact) {
-  if (!contact || !contact.address) {
-    return '';
-  }
-
-  const { id, name, email, picture, phone, website, company } = contact;
-  const { suite, street, city, zipcode } = contact.address;
-
   return `
-  <div class="card" data-id="${contact.id}">
-  <button class="deleteBtn" title="Delete this contact">X</button>
-  <div class="avatar">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <img src="${contact.picture}" />
-  </div>
-  <div class="info">
-    <span class="name big">${contact.name}</span>
-    <span class="email small">${contact.email}</span>
-  </div>
-  <div class="details">
-    <div class="phone">${contact.phone}</div>
-    <div class="website">${contact.website}</div>
-  </div>
+    <div class="card" data-id="${contact.id}">
+    <button class="deleteBtn" title="Delete this contact">X</button>
+    <div class="avatar">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <img src="${contact.picture}" />
+    </div>
+    <div class="info">
+      <span class="name big">${contact.name}</span>
+      <span class="email small">${contact.email}</span>
+    </div>
+    <div class="details">
+      <div class="phone">${contact.phone}</div>
+      <div class="website">${contact.website}</div>
+    </div>
 
-  <div class="additional">
-    <div class="address">
-      <div class="suite">${contact.address.suite}</div>
-      <div class="street">${contact.address.street}</div>
-      <div class="city">${contact.address.city}</div>
-    </div>
-    <div class="company">
-      <div class="label">${contact.company.bs}</div>
-      <div class="company-name">${contact.company.name}</div>
+    <div class="additional">
+      <div class="address">
+        <div class="suite">${contact.address.suite}</div>
+        <div class="street">${contact.address.street}</div>
+        <div class="city">${contact.address.city}</div>
+      </div>
+      <div class="company">
+        <div class="label">${contact.company.bs}</div>
+        <div class="company-name">${contact.company.name}</div>
+      </div>
     </div>
   </div>
-</div>
-`
+  `
 }
 
 /*
@@ -371,7 +364,9 @@ function deleteContact(id) {
     contacts.splice(index, 1);
   }
 }
-
+// console.log("Before deletion:", contacts);
+// deleteContact(1);
+// console.log("After deletion:", contacts)
 /*
   Add a `click` event handler to the `deleteBtn` elements.
   When clicked, get the id of the card that was clicked from the 
