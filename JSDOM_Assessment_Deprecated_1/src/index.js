@@ -246,13 +246,75 @@ window.contacts = [
  Create and return the HTML to render a single contact card.
  The `contact` parameter is an object representing a single contact. 
 */
-function renderContact(contact) {}
+function renderContact(contact) {
+  return `
+  <div class="card" data-id="${contact.id}">
+  <button class="deleteBtn" title="Delete this contact">X</button>
+  <div class="avatar">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <img src="${contact.picture}" />
+  </div>
+  <div class="info">
+    <span class="name big">${contact.name}</span>
+    <span class="email small">${contact.email}</span>
+  </div>
+  <div class="details">
+    <div class="phone">${contact.phone}</div>
+    <div class="website">${contact.website}</div>
+  </div>
+
+  <div class="additional">
+    <div class="address">
+      <div class="suite">${contact.address.suite}</div>
+      <div class="street">${contact.address.street}</div>
+      <div class="city">${contact.address.city}</div>
+    </div>
+    <div class="company">
+      <div class="label">${contact.company.bs}</div>
+      <div class="company-name">${contact.company.name}</div>
+    </div>
+  </div>
+</div>
+`
+}
 
 /*
   Render the array of contacts and insert them on the DOM.
   The contacts should be rendered in the `section` with id "contacts".
 */
-function render(contacts) {}
+function render(contacts) {
+  return `
+  <div class="card" data-id="${contact.id}">
+  <button class="deleteBtn" title="Delete this contact">X</button>
+  <div class="avatar">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <img src="${contact.picture}" />
+  </div>
+  <div class="info">
+    <span class="name big">${contact.name}</span>
+    <span class="email small">${contact.email}</span>
+  </div>
+  <div class="details">
+    <div class="phone">${contact.phone}</div>
+    <div class="website">${contact.website}</div>
+  </div>
+
+  <div class="additional">
+    <div class="address">
+      <div class="suite">${contact.address.suite}</div>
+      <div class="street">${contact.address.street}</div>
+      <div class="city">${contact.address.city}</div>
+    </div>
+    <div class="company">
+      <div class="label">${contact.company.bs}</div>
+      <div class="company-name">${contact.company.name}</div>
+    </div>
+  </div>
+</div>
+`
+}
 
 /*
   Filter by city. Filter the  array of contacts by the given city.
