@@ -247,6 +247,13 @@ window.contacts = [
  The `contact` parameter is an object representing a single contact. 
 */
 function renderContact(contact) {
+  if (!contact || !contact.address) {
+    return '';
+  }
+
+  const { id, name, email, picture, phone, website, company } = contact;
+  const { suite, street, city, zipcode } = contact.address;
+
   return `
   <div class="card" data-id="${contact.id}">
   <button class="deleteBtn" title="Delete this contact">X</button>
@@ -284,36 +291,13 @@ function renderContact(contact) {
   The contacts should be rendered in the `section` with id "contacts".
 */
 function render(contacts) {
-  return `
-  <div class="card" data-id="${contact.id}">
-  <button class="deleteBtn" title="Delete this contact">X</button>
-  <div class="avatar">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <img src="${contact.picture}" />
-  </div>
-  <div class="info">
-    <span class="name big">${contact.name}</span>
-    <span class="email small">${contact.email}</span>
-  </div>
-  <div class="details">
-    <div class="phone">${contact.phone}</div>
-    <div class="website">${contact.website}</div>
-  </div>
+  const contactsSection = document.getElementById('contacts');
+  contactsSection.innterHTML = '';
 
-  <div class="additional">
-    <div class="address">
-      <div class="suite">${contact.address.suite}</div>
-      <div class="street">${contact.address.street}</div>
-      <div class="city">${contact.address.city}</div>
-    </div>
-    <div class="company">
-      <div class="label">${contact.company.bs}</div>
-      <div class="company-name">${contact.company.name}</div>
-    </div>
-  </div>
-</div>
-`
+  contacts.forEach(contact => {
+    const contactHTML = renderContact(contact);
+    contactsSection.innerHTML += contactHTML;
+  });
 }
 
 /*
@@ -353,13 +337,36 @@ function filterHandler() {
   Create a list of cities from the contacts array with no duplicates then
   add an `<option>` element for each city to the select.
 */
-function loadCities(contacts) {}
+function loadCities(contacts) {
+  const selectElement = document.getElementById('filterOptions');
+  selectElement.innerHTML = '';
+
+  const citiesSet = new Set();
+
+  contacts.forEach(contact => {
+    citiesSet.add(contact.address.city);
+  });
+
+  // Add default option
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '0';
+  defaultOption.textContent = '-- Select a city --';
+  selectElement.appendChild(defaultOption);
+  
+  // Now options for unique cities
+  citiesSet.forEach(city => {
+    const option = document.createElement('option');
+    option.value = city;
+    option.textContent = city;
+    selectElement.appendChild(option);
+  });
+}
 
 /*
   Remove the contact from the contact list with the given id.
 */
 function deleteContact(id) {
-  const index = contact.findIndex(contact => contact.id === id);
+  const index = contacts.findIndex(contact => contact.id === id);
   if (index !== -1) {
     contacts.splice(index, 1);
   }
@@ -374,7 +381,9 @@ function deleteContact(id) {
 function deleteButtonHandler() {
   document.querySelectorAll('.deleteBtn').forEach(btn => {
     btn.addEventListener('click', function() {
+      // These IDs will be deleted
       const id = parseInt(this.parentElement.getAttribute('data-id'));
+      // call deleteContact(), then re-render with render()
       deleteContact(contacts, id);
       render(contacts);
     })
@@ -386,9 +395,10 @@ function deleteButtonHandler() {
   required event listeners, call loadCities() then call render().
 */
 function main() {
-  // filterHandler(contacts);
-  // deleteButtonHandler(contacts);
-  // render(contacts);
+  filterHandler(contacts);
+  loadCities(contacts);
+  deleteButtonHandler(contacts);
+  render(contacts);
 }
 
 window.addEventListener("DOMContentLoaded", main);
