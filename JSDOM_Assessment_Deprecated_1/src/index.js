@@ -284,13 +284,14 @@ function renderContact(contact) {
   The contacts should be rendered in the `section` with id "contacts".
 */
 function render(contacts) {
-  const contactsSection = document.getElementById('contacts');
-  contactsSection.innterHTML = '';
-
-  contacts.forEach(contact => {
-    const contactHTML = renderContact(contact);
-    contactsSection.innerHTML += contactHTML;
-  });
+  // get parent element
+  const main = document.getElementById('contacts');
+  // Empty that parent element
+  main.innerHTML = "";
+  // Get contact HTML
+  const contactsSection = contacts.map(renderContact).join("");
+  // Set innerHTML of parent
+  main.innerHTML = contactsSection;
 }
 
 /*
@@ -318,12 +319,12 @@ function filterHandler() {
      if (selectedCity === '0') {
       render(contacts);
     } else {
-      const filteredContacts = filterByCity(contacts, selectedCity);
+      const filteredContacts = filterByCity(selectedCity);
       render(filteredContacts);
     }
   })
 }
-
+// contacts was an unexpected or extra argument fed into the filter and prevented it from functioning
 /*
   Accepts an array of contacts.
   Populate the select with id `filterOptions` with the list of cities.
@@ -364,9 +365,7 @@ function deleteContact(id) {
     contacts.splice(index, 1);
   }
 }
-// console.log("Before deletion:", contacts);
-// deleteContact(1);
-// console.log("After deletion:", contacts)
+
 /*
   Add a `click` event handler to the `deleteBtn` elements.
   When clicked, get the id of the card that was clicked from the 
@@ -376,10 +375,10 @@ function deleteContact(id) {
 function deleteButtonHandler() {
   document.querySelectorAll('.deleteBtn').forEach(btn => {
     btn.addEventListener('click', function() {
-      // These IDs will be deleted
       const id = parseInt(this.parentElement.getAttribute('data-id'));
-      // call deleteContact(), then re-render with render()
-      deleteContact(contacts, id);
+      // console.log("Delete button clicked", id) cannot delete this line for some reason
+      
+      deleteContact(id);
       render(contacts);
     })
   })
@@ -390,10 +389,10 @@ function deleteButtonHandler() {
   required event listeners, call loadCities() then call render().
 */
 function main() {
+  render(contacts);
   filterHandler(contacts);
   loadCities(contacts);
   deleteButtonHandler(contacts);
-  render(contacts);
 }
 
 window.addEventListener("DOMContentLoaded", main);
